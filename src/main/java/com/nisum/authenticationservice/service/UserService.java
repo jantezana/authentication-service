@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,12 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<UserDto> getAllUsers() {
+        List<UserDto> userDtos =  new LinkedList<>();
         List<User> users = this.userRepository.findAll();
-        List<UserDto> userDtos = new LinkedList<>(UserMapper.toUserDtos(users));
+        if (Objects.nonNull(users)) {
+            userDtos = new LinkedList<>(UserMapper.toUserDtos(users));
+        }
+
         return userDtos;
     }
 
