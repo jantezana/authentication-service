@@ -1,5 +1,6 @@
 package com.nisum.authenticationservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -29,16 +30,15 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = {
-        CascadeType.ALL
-    })
-    private List<Phone> phones;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference("User_Phone")
+    private Set<Phone> phones;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", nullable = false)

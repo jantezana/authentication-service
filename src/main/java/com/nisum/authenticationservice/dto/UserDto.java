@@ -10,7 +10,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class UserDto {
     private String name;
     private String email;
     private String password;
-    private List<PhoneDto> phones;
+    private Set<PhoneDto> phones;
     private ZonedDateTime createdDate;
     private ZonedDateTime modifiedDate;
     private ZonedDateTime lastLogin;

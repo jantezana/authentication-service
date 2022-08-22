@@ -6,9 +6,10 @@ import com.nisum.authenticationservice.model.Phone;
 import com.nisum.authenticationservice.model.User;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class UserMapper {
 
@@ -32,9 +33,9 @@ public class UserMapper {
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
-        List<Phone> phones = user.getPhones();
+        Set<Phone> phones = user.getPhones();
         if (Objects.nonNull(phones)) {
-            List<PhoneDto> phoneDtos = new LinkedList<>(PhoneMapper.toPhoneDtos(phones));
+            Set<PhoneDto> phoneDtos = new HashSet<>(PhoneMapper.toPhoneDtos(phones));
             userDto.setPhones(phoneDtos);
         }
         return userDto;
@@ -48,9 +49,9 @@ public class UserMapper {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        List<PhoneDto> phoneDtos = userDto.getPhones();
+        Set<PhoneDto> phoneDtos = userDto.getPhones();
         if (Objects.nonNull(phoneDtos)) {
-            List<Phone> phones = new LinkedList<>(PhoneMapper.toPhones(phoneDtos));
+            Set<Phone> phones = new HashSet<>(PhoneMapper.toPhones(phoneDtos));
             user.setPhones(phones);
         }
         return user;
