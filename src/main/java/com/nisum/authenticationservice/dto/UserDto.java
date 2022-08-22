@@ -21,7 +21,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
-    private int id;
+    private Long id;
     private String name;
     private String email;
     private String password;
