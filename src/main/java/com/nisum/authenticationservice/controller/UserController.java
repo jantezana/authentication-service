@@ -3,6 +3,7 @@ package com.nisum.authenticationservice.controller;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.nisum.authenticationservice.dto.UserDto;
 import com.nisum.authenticationservice.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Api( tags = "Users")
 public class UserController {
 
     @Autowired
