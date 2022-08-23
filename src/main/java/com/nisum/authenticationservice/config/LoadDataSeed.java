@@ -29,7 +29,8 @@ public class LoadDataSeed {
 
             userDto.getPhones().add(phoneDto);
 
-            LOGGER.info("Preloading " + userService.save(userDto));
+            UserDto savedUser = userService.save(userDto);
+            LOGGER.info("Preloading {}", savedUser);
         };
     }
 }

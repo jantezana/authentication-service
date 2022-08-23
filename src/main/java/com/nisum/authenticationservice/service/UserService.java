@@ -47,8 +47,8 @@ public class UserService {
 
     public UserDto save(final UserDto userDto) {
         User user = UserMapper.toUser(userDto);
-        this.userRepository.save(user);
-        return null;
+        User savedUser = this.userRepository.save(user);
+        return UserMapper.toUserDto(savedUser);
     }
 
     public UserDto update(Long userId, JsonPatch patch) throws Exception {
