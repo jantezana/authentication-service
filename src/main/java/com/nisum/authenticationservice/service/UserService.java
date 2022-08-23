@@ -7,12 +7,12 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.nisum.authenticationservice.dto.UserDto;
 import com.nisum.authenticationservice.dto.mapper.UserMapper;
+import com.nisum.authenticationservice.exception.UserNotFoundException;
 import com.nisum.authenticationservice.model.User;
 import com.nisum.authenticationservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class UserService {
         Optional<User> userOptional = this.userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             final String message = String.format("The user with id: %d was not found", userId);
-            throw new EntityNotFoundException(message);
+            throw new UserNotFoundException(message);
         }
         UserDto userDto = UserMapper.toUserDto(userOptional.get());
         return userDto;
@@ -71,7 +71,7 @@ public class UserService {
         Optional<User> userOptional = this.userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             final String message = String.format("The user with id: %d was not found", userId);
-            throw new EntityNotFoundException(message);
+            throw new UserNotFoundException(message);
         }
 
         this.userRepository.delete(userOptional.get());
