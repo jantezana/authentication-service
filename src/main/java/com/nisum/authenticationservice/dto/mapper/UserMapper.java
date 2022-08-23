@@ -4,7 +4,10 @@ import com.nisum.authenticationservice.dto.PhoneDto;
 import com.nisum.authenticationservice.dto.UserDto;
 import com.nisum.authenticationservice.model.Phone;
 import com.nisum.authenticationservice.model.User;
+import com.nisum.authenticationservice.util.DateUtil;
 
+import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -38,6 +41,24 @@ public class UserMapper {
             Set<PhoneDto> phoneDtos = new HashSet<>(PhoneMapper.toPhoneDtos(phones));
             userDto.setPhones(phoneDtos);
         }
+
+        Calendar createdDate = user.getCreatedDate();
+        if (Objects.nonNull(createdDate)) {
+            userDto.setCreatedDate(DateUtil.toZoneDateTime(createdDate));
+        }
+
+        Calendar modifiedDate = user.getModifiedDate();
+        if (Objects.nonNull(modifiedDate)) {
+            userDto.setModifiedDate(DateUtil.toZoneDateTime(modifiedDate));
+        }
+
+        Calendar lastLogin = user.getLastLogin();
+        if (Objects.nonNull(lastLogin)) {
+            userDto.setLastLogin(DateUtil.toZoneDateTime(lastLogin));
+        }
+
+        userDto.setActive(user.isActive());
+
         return userDto;
     }
 
@@ -54,6 +75,23 @@ public class UserMapper {
             Set<Phone> phones = new HashSet<>(PhoneMapper.toPhones(phoneDtos));
             user.setPhones(phones);
         }
+
+        ZonedDateTime createdDate = userDto.getCreatedDate();
+        if (Objects.nonNull(createdDate)) {
+            user.setCreatedDate(DateUtil.toCalendar(createdDate));
+        }
+
+        ZonedDateTime modifiedDate = userDto.getModifiedDate();
+        if (Objects.nonNull(modifiedDate)) {
+            user.setModifiedDate(DateUtil.toCalendar(modifiedDate));
+        }
+
+        ZonedDateTime lastLogin = userDto.getLastLogin();
+        if (Objects.nonNull(lastLogin)) {
+            user.setLastLogin(DateUtil.toCalendar(lastLogin));
+        }
+
+        user.setActive(userDto.isActive());
         return user;
     }
 }
