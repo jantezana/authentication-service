@@ -4,11 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse handleUserNotFoundException(UserNotFoundException userNotFoundException) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpCode(HttpStatus.NOT_FOUND.value());
@@ -17,7 +21,18 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setKey("CONSTRAINT_VIOLATION_EXCEPTION");
+        errorResponse.setMessage(constraintViolationException.getMessage());
+        return errorResponse;
+    }
+
     @ExceptionHandler(value = NisumException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ErrorResponse handleNisumException(NisumException nisumException) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -28,6 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ErrorResponse handleException(Exception exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());

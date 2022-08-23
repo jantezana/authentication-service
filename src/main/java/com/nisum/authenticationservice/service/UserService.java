@@ -13,16 +13,23 @@ import com.nisum.authenticationservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private Validator validator;
 
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtos =  new LinkedList<>();
@@ -46,6 +53,11 @@ public class UserService {
     }
 
     public UserDto save(final UserDto userDto) {
+        Set<ConstraintViolation<UserDto>> violations = this.validator.validate(userDto);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
         User user = UserMapper.toUser(userDto);
         User savedUser = this.userRepository.save(user);
         return UserMapper.toUserDto(savedUser);
