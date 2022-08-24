@@ -138,4 +138,11 @@ curl --location --request DELETE 'http://localhost:8080/users/1' \
 None
 ```
 
+### Postman requests
+You can import the requests using the file:
+```
+/resources/Nisum.postman_collection.json
+```
+
+
 
