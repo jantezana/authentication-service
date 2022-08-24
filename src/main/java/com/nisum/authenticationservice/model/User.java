@@ -56,6 +56,7 @@ public class User {
     private Calendar lastLogin;
 
     private boolean active;
+    private String token;
 
     public User() {
         this.phones = new HashSet<>();

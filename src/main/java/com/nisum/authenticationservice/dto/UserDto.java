@@ -34,6 +34,7 @@ public class UserDto {
     private ZonedDateTime modifiedDate;
     private ZonedDateTime lastLogin;
     private boolean active;
+    private String token;
 
     public UserDto() {
         this.phones = new HashSet<>();

@@ -10,6 +10,7 @@ import com.nisum.authenticationservice.dto.mapper.UserMapper;
 import com.nisum.authenticationservice.exception.UserNotFoundException;
 import com.nisum.authenticationservice.model.User;
 import com.nisum.authenticationservice.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -63,7 +65,7 @@ public class UserService {
         return UserMapper.toUserDto(savedUser);
     }
 
-    public UserDto update(Long userId, JsonPatch patch) throws Exception {
+    public UserDto update(final Long userId, JsonPatch patch) throws Exception {
         UserDto userDto = this.getUserById(userId);
         UserDto customerPatched = this.applyPatchToUser(patch, userDto);
         User userPatched = UserMapper.toUser(customerPatched);
@@ -79,7 +81,7 @@ public class UserService {
         return objectMapper.treeToValue(patched, UserDto.class);
     }
 
-    public void delete(Long userId) {
+    public void delete(final Long userId) {
         Optional<User> userOptional = this.userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             final String message = String.format("The user with id: %d was not found", userId);
@@ -87,5 +89,18 @@ public class UserService {
         }
 
         this.userRepository.delete(userOptional.get());
+    }
+
+    public String login(final String email, final String password) {
+        Optional<User> userOptional = this.userRepository.login(email, password);
+        if (userOptional.isPresent()) {
+            String token = UUID.randomUUID().toString();
+            User user = userOptional.get();
+            user.setToken(token);
+            this.userRepository.save(user);
+            return token;
+        }
+
+        return StringUtils.EMPTY;
     }
 }

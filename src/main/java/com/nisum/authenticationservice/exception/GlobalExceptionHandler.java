@@ -21,6 +21,16 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    @ExceptionHandler(value = LoggedUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody ErrorResponse handleUserNotFoundException(LoggedUserException loggedUserException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setKey(loggedUserException.getErrorKey());
+        errorResponse.setMessage(loggedUserException.getMessage());
+        return errorResponse;
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleConstraintViolationException(ConstraintViolationException constraintViolationException) {

@@ -58,6 +58,7 @@ public class UserMapper {
         }
 
         userDto.setActive(user.isActive());
+        userDto.setToken(user.getToken());
 
         return userDto;
     }
