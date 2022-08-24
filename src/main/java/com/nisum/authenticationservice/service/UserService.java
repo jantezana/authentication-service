@@ -12,6 +12,7 @@ import com.nisum.authenticationservice.model.User;
 import com.nisum.authenticationservice.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -34,7 +35,7 @@ public class UserService {
     private Validator validator;
 
     public List<UserDto> getAllUsers() {
-        List<UserDto> userDtos =  new LinkedList<>();
+        List<UserDto> userDtos = new LinkedList<>();
         List<User> users = this.userRepository.findAll();
         if (Objects.nonNull(users)) {
             userDtos = new LinkedList<>(UserMapper.toUserDtos(users));
@@ -88,7 +89,9 @@ public class UserService {
             throw new UserNotFoundException(message);
         }
 
-        this.userRepository.delete(userOptional.get());
+        User foundUser = userOptional.get();
+        foundUser.setActive(false);
+        this.userRepository.save(foundUser);
     }
 
     public String login(final String email, final String password) {
@@ -97,10 +100,26 @@ public class UserService {
             String token = UUID.randomUUID().toString();
             User user = userOptional.get();
             user.setToken(token);
+            user.setActive(Boolean.TRUE);
             this.userRepository.save(user);
             return token;
         }
 
         return StringUtils.EMPTY;
+    }
+
+    public Optional<org.springframework.security.core.userdetails.User> findByToken(final String token) {
+        Optional<User> userOptional = this.userRepository.findByToken(token);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            org.springframework.security.core.userdetails.User userSpring = new org.springframework.security.core.userdetails.User(user.getEmail(),
+                                                                                                                                   user.getPassword(),
+                                                                                                                                   true, true, true,
+                                                                                                                                   true,
+                                                                                                                                   AuthorityUtils.createAuthorityList(
+                                                                                                                                       "USER"));
+            return Optional.of(userSpring);
+        }
+        return Optional.empty();
     }
 }

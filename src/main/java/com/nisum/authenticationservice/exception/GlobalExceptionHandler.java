@@ -1,6 +1,8 @@
 package com.nisum.authenticationservice.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +25,31 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = LoggedUserException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody ErrorResponse handleUserNotFoundException(LoggedUserException loggedUserException) {
+    public @ResponseBody ErrorResponse handleLoggerUserException(LoggedUserException loggedUserException) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setKey(loggedUserException.getErrorKey());
         errorResponse.setMessage(loggedUserException.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody ErrorResponse handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setKey("UNAUTHORIZED");
+        errorResponse.setMessage(usernameNotFoundException.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody ErrorResponse handleAuthenticationException(AuthenticationException AuthenticationException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setKey("UNAUTHORIZED");
+        errorResponse.setMessage(AuthenticationException.getMessage());
         return errorResponse;
     }
 
