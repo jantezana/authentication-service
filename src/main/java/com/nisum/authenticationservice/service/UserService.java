@@ -12,6 +12,8 @@ import com.nisum.authenticationservice.model.User;
 import com.nisum.authenticationservice.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
@@ -95,6 +99,10 @@ public class UserService {
         }
 
         User foundUser = userOptional.get();
+        if (!foundUser.isActive()) {
+            logger.warn("The user with Id: {} was already deleted", userId);
+            return;
+        }
         foundUser.setActive(false);
         this.userRepository.save(foundUser);
     }
