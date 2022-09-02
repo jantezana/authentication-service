@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class UserController {
      */
     @PostMapping("/users")
     @ResponseStatus(code = HttpStatus.CREATED)
-    private UserDto saveUser(@RequestBody UserDto user) {
+    private UserDto saveUser(@Valid @RequestBody UserDto user) {
         UserDto savedUser = this.userService.save(user);
         return savedUser;
     }

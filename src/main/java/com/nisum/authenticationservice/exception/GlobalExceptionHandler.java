@@ -3,12 +3,16 @@ package com.nisum.authenticationservice.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * GlobalExceptionHandler class.
@@ -68,6 +72,23 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setKey("METHOD_ARGUMENT_NOT_VALID_EXCEPTION");
+
+        Map<String, String> errors = new HashMap<>();
+        methodArgumentNotValidException.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        errorResponse.setMessage(errors.toString());
+        return errorResponse;
+    }
+
     @ExceptionHandler(value = NisumException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ErrorResponse handleNisumException(NisumException nisumException) {
@@ -82,6 +103,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ErrorResponse handleException(Exception exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponse.setKey("INTERNAL_SERVER_ERROR");
+        errorResponse.setMessage(exception.getMessage());
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ErrorResponse handleRuntimeException(RuntimeException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponse.setKey("INTERNAL_SERVER_ERROR");

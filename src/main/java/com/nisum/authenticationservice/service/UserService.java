@@ -66,11 +66,6 @@ public class UserService {
     }
 
     public UserDto save(final UserDto userDto) {
-        Set<ConstraintViolation<UserDto>> violations = this.validator.validate(userDto);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
-
         User user = UserMapper.toUser(userDto);
         User savedUser = this.userRepository.save(user);
         return UserMapper.toUserDto(savedUser);
