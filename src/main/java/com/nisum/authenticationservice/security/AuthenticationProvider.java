@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * AuthenticationProvider class.
+ *
+ * @author jantezana
+ */
 @Component
 public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 

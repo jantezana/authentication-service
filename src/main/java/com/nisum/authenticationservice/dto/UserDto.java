@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class UserDto {
     private String name;
 
     @NotBlank(message = "Email is mandatory")
+    @Email(message = "Please provide a valid email address")
     private String email;
     private String password;
     private Set<PhoneDto> phones;

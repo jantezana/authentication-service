@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * ErrorResponse class.
+ *
+ * @author jantezana
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

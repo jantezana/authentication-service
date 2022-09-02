@@ -6,11 +6,21 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
+/**
+ * UserRepository class.
+ *
+ * @author jantezana
+ */
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT u FROM User u where u.email = ?1 and u.password = ?2")
-    Optional<User> login(String username, String password);
+    Optional<User> login(final String email, final String password);
 
-    @Query(value = "SELECT u FROM User u where u.token = ?1")
-    Optional<User> findByToken(String token);
+    /**
+     * Finds by token.
+     *
+     * @param token The token
+     * @return The user optional
+     */
+    Optional<User> findByToken(final String token);
 }

@@ -7,6 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoggedUser class.
+ *
+ * @author jantezana
+ */
 @Getter
 @Setter
 @Accessors(chain = true)

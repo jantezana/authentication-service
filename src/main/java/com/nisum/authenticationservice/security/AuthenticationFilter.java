@@ -16,6 +16,11 @@ import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+/**
+ * AuthenticationFilter class.
+ *
+ * @author jantezana
+ */
 public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 

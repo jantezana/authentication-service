@@ -14,6 +14,11 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * UserMapper class.
+ *
+ * @author jantezana
+ */
 public class UserMapper {
 
     public static Collection<UserDto> toUserDtos(final Collection<User> users) {

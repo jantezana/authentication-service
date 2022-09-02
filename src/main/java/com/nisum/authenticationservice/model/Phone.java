@@ -11,6 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Phone entity.
+ *
+ * @author jantezana
+ */
 @Entity
 @Table(name = "phone")
 @Getter

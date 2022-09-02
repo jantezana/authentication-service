@@ -7,6 +7,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
+/**
+ * DateUtil class.
+ *
+ * @author jantezana
+ */
 public class DateUtil {
 
     public static ZonedDateTime toZoneDateTime(Calendar calendar) {

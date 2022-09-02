@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolationException;
 
+/**
+ * GlobalExceptionHandler class.
+ *
+ * @author jantezana
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

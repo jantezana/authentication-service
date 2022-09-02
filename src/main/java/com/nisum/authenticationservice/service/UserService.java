@@ -28,11 +28,15 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final Validator validator;
 
     @Autowired
-    private Validator validator;
+    public UserService(UserRepository userRepository, Validator validator) {
+        this.userRepository = userRepository;
+        this.validator = validator;
+    }
 
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtos = new LinkedList<>();

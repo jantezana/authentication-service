@@ -8,6 +8,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PhoneDto class.
+ *
+ * @author jantezana
+ */
 @Getter
 @Setter
 @Accessors(chain = true)

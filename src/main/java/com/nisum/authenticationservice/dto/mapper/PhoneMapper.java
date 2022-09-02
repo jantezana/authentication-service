@@ -7,6 +7,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/**
+ * PhoneMapper class.
+ *
+ * @author jantezana
+ */
 public class PhoneMapper {
 
     public static Collection<PhoneDto> toPhoneDtos(final Collection<Phone> phones) {

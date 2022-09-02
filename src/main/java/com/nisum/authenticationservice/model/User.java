@@ -23,6 +23,11 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * User entity.
+ *
+ * @author jantezana
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")

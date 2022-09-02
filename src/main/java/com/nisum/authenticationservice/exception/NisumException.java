@@ -3,6 +3,11 @@ package com.nisum.authenticationservice.exception;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * NisumException class.
+ *
+ * @author jantezana
+ */
 public class NisumException extends RuntimeException {
 
     @Getter
