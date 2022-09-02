@@ -11,9 +11,11 @@ import com.nisum.authenticationservice.exception.UserNotFoundException;
 import com.nisum.authenticationservice.model.User;
 import com.nisum.authenticationservice.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -38,24 +40,28 @@ public class UserService {
         this.validator = validator;
     }
 
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtos = new LinkedList<>();
         List<User> users = this.userRepository.findAll();
         if (Objects.nonNull(users)) {
+            users.forEach(user -> Hibernate.initialize(user.getPhones()));
             userDtos = new LinkedList<>(UserMapper.toUserDtos(users));
         }
 
         return userDtos;
     }
 
-
+    @Transactional(readOnly = true)
     public UserDto getUserById(final Long userId) {
         Optional<User> userOptional = this.userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             final String message = String.format("The user with id: %d was not found", userId);
             throw new UserNotFoundException(message);
         }
-        UserDto userDto = UserMapper.toUserDto(userOptional.get());
+        User user = userOptional.get();
+        Hibernate.initialize(user.getPhones());
+        UserDto userDto = UserMapper.toUserDto(user);
         return userDto;
     }
 
